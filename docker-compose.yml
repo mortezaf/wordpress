@@ -1,0 +1,26 @@
+services:
+
+  wordpress:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: wordpress
+    container_name: wordpress
+    working_dir: /var/www/wordpress
+    tty: true
+    ports:
+    - "8080:8080"
+    volumes:
+    - ./wordpress:/var/www/wordpress
+    
+  db:
+    image: docker.manageit.ir/library/mariadb:10
+    restart: always
+    container_name: wordpress-db
+    environment:
+      MYSQL_DATABASE: ${DB_MYSQL_NAME}
+      MYSQL_USER: ${DB_MYSQL_USER}
+      MYSQL_PASSWORD: ${DB_MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ./db:/var/lib/mysql
